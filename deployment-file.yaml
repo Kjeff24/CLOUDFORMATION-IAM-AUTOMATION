@@ -1,4 +1,3 @@
-template-file-path: ./lab-1.yaml
-tags:
-  Name: 'gitsync'
-  Project: 'CLOUDFORMATION-IAM-AUTOMATION'
+template-file-path: lab-1.yaml
+parameters: {}
+tags: {}
