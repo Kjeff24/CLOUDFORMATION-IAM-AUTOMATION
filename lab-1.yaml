@@ -160,17 +160,13 @@ Resources:
       Principal: "events.amazonaws.com"
       SourceArn: !GetAtt UserCreationEventRule.Arn
 
-#  CloudWatchLogGroup:
-#    Type: "AWS::Logs::LogGroup"
-#    Properties:
-#      LogGroupName: !Sub "/aws/lambda/${PrintUserPasswordLambda}"
-#      RetentionInDays: 30
+  CloudWatchLogGroup:
+    Type: "AWS::Logs::LogGroup"
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${PrintUserPasswordLambda}"
+      RetentionInDays: 2
 
 Outputs:
   User1Details:
     Description: "Email and Password of User 1"
     Value: !Sub "Email: {{resolve:ssm:/user/emails/user1}}, Password: {{resolve:secretsmanager:${OneTimePassword}::password}}"
-
-  User2Details:
-    Description: "Email and Password of User 2"
-    Value: !Sub "Email: {{resolve:ssm:/user/emails/user2}}, Password: {{resolve:secretsmanager:${OneTimePassword}::password}}"
