@@ -77,6 +77,16 @@ Resources:
         Password: !Sub '{{resolve:secretsmanager:${OneTimePassword}::password}}'
         PasswordResetRequired: true
 
+  IAMUser600:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: "user600"
+      Groups:
+        - !Ref EC2Group
+      LoginProfile:
+        Password: !Sub '{{resolve:secretsmanager:${OneTimePassword}::password}}'
+        PasswordResetRequired: true
+
 
   # Parameter Store to store user 1 email
   User1EmailParameter:
@@ -104,6 +114,15 @@ Resources:
       Name: '/user/emails/user500'
       Type: String
       Value: 'user500@example.com'
+      Description: 'Email address for User 2'
+
+  # Parameter Store to store user 2 email
+  User600EmailParameter:
+    Type: 'AWS::SSM::Parameter'
+    Properties:
+      Name: '/user/emails/user600'
+      Type: String
+      Value: 'user600@example.com'
       Description: 'Email address for User 2'
 
   # EventBridge Rule to detect new IAM user creation
@@ -142,7 +161,7 @@ Resources:
             
             # Parse the event to extract the username from 'detail' section
             user_name = event['detail']['requestParameters']['userName']
-            email_param = f"/user/emails/{user_name.lower()}"
+            email_param = f"/user/emails/{user_name}"
             
             email_response = ssm.get_parameter(Name=email_param, WithDecryption=False)
             email = email_response['Parameter']['Value']
